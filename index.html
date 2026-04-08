@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpeSuite — The Digital Intelligence Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <style>
+    :root {
+      --bg: #030407;
+      --surface: #0a0b10;
+      --surface-hover: #12131a;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --accent: #38bdf8;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      --glass: rgba(10, 11, 16, 0.4);
+      --shadow-3d: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+      --radius: 20px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ── Light Mode Variables ── */
+    html.light {
+      --bg: #f0f2f8;
+      --surface: #e4e8f2;
+      --surface-hover: #d8ddef;
+      --border: rgba(0, 0, 0, 0.09);
+      --border-hover: rgba(0, 0, 0, 0.2);
+      --text: #1e2130;
+      --text-muted: #5a6080;
+      --glass: rgba(224, 228, 242, 0.5);
+      --shadow-3d: 0 30px 60px -15px rgba(99, 102, 241, 0.12);
+    }
+    html.light body { background: var(--bg); color: var(--text); }
+    html.light #spotlight {
+      background: radial-gradient(800px circle at var(--x) var(--y), rgba(99, 102, 241, 0.04), transparent 60%);
+    }
+    html.light .grid-bg {
+      background-image: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    }
+    html.light header {
+      background: rgba(235, 238, 248, 0.75);
+      border-bottom-color: var(--border);
+    }
+    html.light header.scrolled { background: rgba(232, 235, 246, 0.92); }
+    html.light .btn-outline {
+      background: rgba(0,0,0,0.03);
+      border-color: var(--border);
+      color: var(--text);
+    }
+    html.light .btn-outline:hover { background: rgba(0,0,0,0.07); }
+    html.light .card-3d::before {
+      background: radial-gradient(circle at var(--mx) var(--my), rgba(99,102,241,0.08) 0%, transparent 65%);
+    }
+    html.light .tag { background: rgba(0,0,0,0.04); }
+    html.light .crypto-box { background: var(--surface); }
+    html.light .social-icon { background: var(--surface); }
+    html.light .cursor { border-color: var(--primary); mix-blend-mode: normal; }
+    html.light footer { background: linear-gradient(180deg, transparent, var(--bg)); }
+
+    /* ── Theme Toggle Button ── */
+    .theme-toggle {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      backdrop-filter: blur(10px);
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+      transform: translateY(-2px) rotate(15deg);
+      box-shadow: 0 6px 20px rgba(56,189,248,0.15);
+    }
+    html.light .theme-toggle {
+      background: rgba(0,0,0,0.04);
+      border-color: var(--border);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    html[lang="ar"] body {
+      font-family: 'Noto Sans Arabic', 'Inter', system-ui, sans-serif;
+    }
+    #spotlight {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1;
+      background: radial-gradient(800px circle at var(--x) var(--y), rgba(99, 102, 241, 0.06), transparent 60%);
+      opacity: 0; transition: opacity 0.5s;
+    }
+    body:hover #spotlight { opacity: 1; }
+    .grid-bg {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+    }
+    #bg-3d { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+    .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--gradient); z-index: 1001; width: 0%; transition: width 0.1s linear; }
+    .cursor {
+      position: fixed; width: 24px; height: 24px; border: 1px solid var(--accent);
+      border-radius: 50%; pointer-events: none; z-index: 10000;
+      transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor.hover { width: 60px; height: 60px; background: rgba(56, 189, 248, 0.05); border-color: rgba(56, 189, 248, 0.5); backdrop-filter: blur(2px); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    section { padding: 140px 0; }
+    .text-gradient { background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glitch-text { position: relative; display: inline-block; }
+    .glitch-text:hover { animation: glitch 0.4s cubic-bezier(.25, .46, .45, .94) both infinite; color: var(--accent); }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px;
+      background: var(--gradient); color: white; font-weight: 600; border-radius: 50px;
+      text-decoration: none; transition: all 0.3s var(--ease); border: 1px solid transparent;
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(99, 102, 241, 0.35); }
+    .btn-outline { background: rgba(255,255,255,0.02); border: 1px solid var(--border); backdrop-filter: blur(10px); }
+    .btn-outline:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.08); }
+
+    /* ── Language Toggle Button ── */
+    .lang-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--text-muted);
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      backdrop-filter: blur(10px);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .lang-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.06);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56,189,248,0.15);
+    }
+    .lang-toggle .lang-icon { font-size: 1rem; }
+    .lang-toggle .lang-label { letter-spacing: 0.5px; }
+
+    header {
+      position: fixed; top: 0; left: 0; right: 0; padding: 24px 0; z-index: 100;
+      backdrop-filter: blur(16px); background: rgba(3, 4, 7, 0.6);
+      border-bottom: 1px solid var(--border); transition: all 0.3s;
+    }
+    header.scrolled { padding: 16px 0; background: rgba(3, 4, 7, 0.85); }
+    nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .logo { font-weight: 800; font-size: 1.6rem; letter-spacing: -0.5px; flex-shrink: 0; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+
+    /* RTL adjustments */
+    html[dir="rtl"] .eco-item:hover { transform: translateX(-8px); }
+    html[dir="rtl"] .hero-actions { flex-direction: row-reverse; }
+
+    .hero { text-align: center; padding-top: 200px; padding-bottom: 120px; }
+    .badge {
+      display: inline-block; padding: 6px 14px; background: rgba(56, 189, 248, 0.08);
+      color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 50px; font-size: 0.8rem; font-weight: 600; margin-bottom: 24px;
+    }
+    .hero h1 { font-size: clamp(3rem, 7vw, 6rem); line-height: 1.05; font-weight: 800; margin-bottom: 24px; letter-spacing: -2px; }
+    html[lang="ar"] .hero h1 { letter-spacing: 0; }
+    .hero p { font-size: 1.35rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 48px; }
+    .hero-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .stats { display: flex; justify-content: center; gap: 64px; margin-top: 100px; flex-wrap: wrap; }
+    .stat-item { text-align: center; }
+    .stat-val { font-size: 3rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .stat-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    html[lang="ar"] .stat-label { letter-spacing: 0; }
+    .card-3d {
+      background: var(--glass); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 40px; transition: transform 0.1s linear, box-shadow 0.3s var(--ease), border-color 0.3s;
+      transform-style: preserve-3d; position: relative; overflow: hidden;
+    }
+    .card-3d::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,0.12) 0%, transparent 65%);
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .card-3d:hover { border-color: var(--border-hover); box-shadow: var(--shadow-3d); }
+    .card-3d:hover::before { opacity: 1; }
+    .card-inner { transform: translateZ(30px); position: relative; z-index: 2; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .tag {
+      padding: 6px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 4px; font-size: 0.75rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    html[lang="ar"] .tag { text-transform: none; letter-spacing: 0; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; margin-top: 64px; }
+    .product-card h3 { font-size: 2rem; margin-bottom: 12px; }
+    .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 56px; }
+    .feature-card { text-align: center; padding: 48px 24px; }
+    .feature-card .icon { font-size: 3rem; margin-bottom: 20px; display: inline-block; transition: transform 0.4s var(--ease); }
+    .feature-card:hover .icon { transform: scale(1.15) rotate(5deg); }
+    .feature-card h3 { font-size: 1.4rem; margin-bottom: 12px; }
+    .eco-list { display: flex; flex-direction: column; gap: 16px; max-width: 850px; margin: 56px auto 0; }
+    .eco-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); transition: all 0.3s;
+    }
+    .eco-item:hover { transform: translateX(8px); border-color: var(--border-hover); background: var(--surface-hover); }
+    .status {
+      padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
+      min-width: 90px; text-align: center;
+    }
+    .status.live { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+    .status.dev { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+    footer {
+      background: linear-gradient(180deg, transparent, var(--bg));
+      padding: 80px 0 40px; border-top: 1px solid var(--border); position: relative;
+    }
+    .footer-content { text-align: center; }
+    .footer-logo { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+    .footer-copy { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .crypto-box {
+      margin: 24px auto; max-width: 650px; background: var(--surface);
+      padding: 16px 24px; border-radius: 12px; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem; border: 1px solid var(--border);
+    }
+    .crypto-item { margin-bottom: 12px; }
+    .crypto-item:last-child { margin-bottom: 0; }
+    .crypto-label { color: var(--text-muted); }
+    .crypto-val { color: var(--accent); }
+    .social-links { display: flex; justify-content: center; gap: 20px; margin: 32px 0; }
+    .social-icon {
+      width: 40px; height: 40px; border-radius: 50%; background: var(--surface);
+      border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s var(--ease);
+    }
+    .social-icon svg { width: 18px; height: 18px; fill: var(--text-muted); transition: fill 0.3s; }
+    .social-icon:hover {
+      background: var(--accent); border-color: var(--accent); transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(56, 189, 248, 0.25);
+    }
+    .social-icon:hover svg { fill: var(--bg); }
+    .footer-nav { display: flex; justify-content: center; gap: 24px; margin-top: 24px; }
+    .footer-nav a {
+      color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s;
+    }
+    .footer-nav a:hover { color: var(--accent); }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 3rem; letter-spacing: -1px; }
+      .stats { gap: 32px; }
+      .nav-links { display: none; }
+      .card-3d { transform: none !important; perspective: none; }
+      .cursor { display: none; }
+      .lang-toggle .lang-label { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { transition: none; opacity: 1; transform: none; }
+      #bg-3d, .grid-bg { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <div class="cursor"></div>
+  <div id="spotlight"></div>
+  <div class="grid-bg"></div>
+  <canvas id="bg-3d"></canvas>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">OpeSuite<span class="text-gradient glitch-text">.</span></div>
+        <ul class="nav-links">
+          <li><a href="#products" class="magnetic" data-i18n="nav.products">Products</a></li>
+          <li><a href="#features" class="magnetic" data-i18n="nav.platform">Platform</a></li>
+          <li><a href="#ecosystem" class="magnetic" data-i18n="nav.ecosystem">Ecosystem</a></li>
+          <li><a href="#cta" class="magnetic" data-i18n="nav.docs">Docs</a></li>
+        </ul>
+        <div class="nav-right">
+          <button class="theme-toggle magnetic" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark mode">🌙</button>
+          <button class="lang-toggle magnetic" id="langToggle" aria-label="Switch language">
+            <span class="lang-icon">🌐</span>
+            <span class="lang-label" id="langLabel">العربية</span>
+          </button>
+          <a href="#products" class="btn magnetic glitch-text" data-i18n="nav.cta">Get Access</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="badge reveal" data-i18n="hero.badge">⚡ Early Access — Features may change as we build</div>
+      <h1 class="text-gradient reveal delay-1 glitch-text" data-i18n="hero.h1">Intelligent Digital Infrastructure</h1>
+      <p class="reveal delay-2" data-i18n="hero.p">OpeSuite BRAND HOUSE. A unified ecosystem of intelligent tools built for the next generation of creators, communicators, and builders.</p>
+      <div class="hero-actions reveal delay-3">
+        <a href="#products" class="btn magnetic" data-i18n="hero.cta1">Explore Products</a>
+        <a href="#features" class="btn btn-outline magnetic" data-i18n="hero.cta2">Learn More</a>
+      </div>
+      <div class="stats reveal delay-3">
+        <div class="stat-item"><div class="stat-val">2</div><div class="stat-label" data-i18n="stats.products">Live Products</div></div>
+        <div class="stat-item"><div class="stat-val">AI</div><div class="stat-label" data-i18n="stats.core">Powered Core</div></div>
+        <div class="stat-item"><div class="stat-val">E2E</div><div class="stat-label" data-i18n="stats.encrypted">Encrypted P2P</div></div>
+        <div class="stat-item"><div class="stat-val">∞</div><div class="stat-label" data-i18n="stats.scale">Scalability</div></div>
+      </div>
+    </section>
+
+    <section id="products" class="container">
+      <h2 class="reveal" style="font-size: 3rem; text-align: center; margin-bottom: 16px;" data-i18n="products.title">The OpeSuite Family</h2>
+      <p class="reveal delay-1" style="text-align: center; color: var(--text-muted); max-width: 650px; margin: 0 auto;" data-i18n="products.sub">Two powerful products, one cohesive vision. Built for intelligence and privacy-first communication.</p>
+      <div class="grid-2">
+        <div class="card-3d product-card reveal delay-1">
+          <div class="card-inner">
+            <span class="text-gradient" style="font-weight: 700; letter-spacing: 1px; font-size: 0.9rem;" data-i18n="opeai.label">AI Interface</span>
+            <h3>OpeAI</h3>
+            <p data-i18n="opeai.desc">A premium AI chat experience powered by advanced language models. Featuring a particle-animated canvas, multi-model support, conversation threading, and a polished adaptive interface with light/dark themes.</p>
+            <div class="card-tags">
+              <span class="tag" data-i18n="opeai.tag1">Multi-model AI</span>
+              <span class="tag" data-i18n="opeai.tag2">Canvas Particles</span>
+              <span class="tag" data-i18n="opeai.tag3">Conversation History</span>
+              <span class="tag" data-i18n="opeai.tag4">Markdown Rendering</span>
+              <span class="tag" data-i18n="opeai.tag5">Dark / Light Theme</span>
+              <span class="tag" data-i18n="opeai.tag6">Emoji Reactions</span>
+            </div>
+            <a href="https://opeaitest.netlify.app/" class="btn magnetic" style="margin-top: 28px; width: 100%; justify-content: center;" data-i18n="opeai.btn">Launch OpeAI →</a>
+          </div>
+        </div>
+        <div class="card-3d product-card reveal delay-2">
+          <div class="card-inner">
+            <span style="color: var(--accent); font-weight: 700; letter-spacing: 1px; font-size: 0.9rem;" data-i18n="opechat.label">Encrypted P2P</span>
+            <h3>OpeChat</h3>
+            <p data-i18n="opechat.desc">A ratchet-encrypted peer-to-peer messaging platform. Zero servers, zero logs. Direct browser-to-browser communication with ephemeral keys, self-destructing messages, and military-grade privacy by default.</p>
+            <div class="card-tags">
+              <span class="tag" data-i18n="opechat.tag1">Ratchet Encryption</span>
+              <span class="tag" data-i18n="opechat.tag2">P2P Direct</span>
+              <span class="tag" data-i18n="opechat.tag3">Self-Destruct Msgs</span>
+              <span class="tag" data-i18n="opechat.tag4">Zero Servers</span>
+              <span class="tag" data-i18n="opechat.tag5">Group Rooms</span>
+              <span class="tag" data-i18n="opechat.tag6">File Sharing</span>
+            </div>
+            <a href="https://opechat.netlify.app/" class="btn magnetic" style="margin-top: 28px; width: 100%; justify-content: center;" data-i18n="opechat.btn">Launch OpeChat →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="container">
+      <h2 class="reveal" style="font-size: 3rem; text-align: center; margin-bottom: 16px;" data-i18n="features.title">Built different. Built for you.</h2>
+      <p class="reveal delay-1" style="text-align: center; color: var(--text-muted); max-width: 700px; margin: 0 auto;" data-i18n="features.sub">Every product in OpeSuite is engineered with the same obsessive attention to craft, privacy, and user experience.</p>
+      <div class="platform-grid">
+        <div class="card-3d feature-card reveal delay-1"><div class="card-inner"><span class="icon">🧠</span><h3 data-i18n="feat1.title">AI-First Architecture</h3><p style="color: var(--text-muted);" data-i18n="feat1.desc">Intelligence baked into every layer — from dynamic UI generation to contextual responses.</p></div></div>
+        <div class="card-3d feature-card reveal delay-2"><div class="card-inner"><span class="icon">🔒</span><h3 data-i18n="feat2.title">Privacy by Design</h3><p style="color: var(--text-muted);" data-i18n="feat2.desc">Zero data collection. End-to-end encryption. Your conversations stay between you and the intended recipient.</p></div></div>
+        <div class="card-3d feature-card reveal delay-3"><div class="card-inner"><span class="icon">⚡</span><h3 data-i18n="feat3.title">Real-time Everything</h3><p style="color: var(--text-muted);" data-i18n="feat3.desc">Sub-50ms latency P2P connections. Streaming AI responses. Instant everything.</p></div></div>
+        <div class="card-3d feature-card reveal delay-1"><div class="card-inner"><span class="icon">🎨</span><h3 data-i18n="feat4.title">Design Obsession</h3><p style="color: var(--text-muted);" data-i18n="feat4.desc">Every pixel intentional. Adaptive dark & light themes, fluid animations, and premium micro-interactions.</p></div></div>
+      </div>
+    </section>
+
+    <section id="ecosystem" class="container">
+      <h2 class="reveal" style="font-size: 3rem; text-align: center;" data-i18n="eco.title">The Suite is growing</h2>
+      <p class="reveal delay-1" style="text-align: center; color: var(--text-muted); margin-bottom: 32px;" data-i18n="eco.sub">More intelligent tools are joining the OpeSuite family.</p>
+      <div class="eco-list reveal delay-2">
+        <div class="eco-item">
+          <div><strong>🤖 OpeAI</strong><br><span style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="eco.opeai">Advanced AI chat interface with multi-model support and rich interactions.</span></div>
+          <span class="status live" data-i18n="status.live">● Live</span>
+        </div>
+        <div class="eco-item">
+          <div><strong>💬 OpeChat</strong><br><span style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="eco.opechat">End-to-end encrypted peer-to-peer messaging with zero server dependency.</span></div>
+          <span class="status live" data-i18n="status.live">● Live</span>
+        </div>
+        <div class="eco-item">
+          <div><strong>🚀 OpeWork</strong><br><span style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="eco.opework">An AI-powered workspace and productivity hub. Currently in development.</span></div>
+          <span class="status dev" data-i18n="status.soon">◌ Coming Soon</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta" class="container">
+      <div style="text-align: center; background: linear-gradient(180deg, rgba(99,102,241,0.05), transparent); border: 1px solid var(--border); border-radius: 30px; padding: 80px 24px;" class="reveal">
+        <h2 style="font-size: 3.5rem; margin-bottom: 24px;" data-i18n="cta.title">Your suite awaits.</h2>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 40px;" data-i18n="cta.sub">No accounts. No subscriptions. Just open and start. Both products run fully in your browser.</p>
+        <div class="hero-actions">
+          <a href="https://opeaitest.netlify.app/" class="btn magnetic" data-i18n="cta.btn1">Open OpeAI</a>
+          <a href="https://opechat.netlify.app/" class="btn btn-outline magnetic" data-i18n="cta.btn2">Open OpeChat</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">OpeSuite</div>
+        <p class="footer-copy" data-i18n="footer.copy">© 2025 OpeSuite · All rights reserved</p>
+
+        <div class="crypto-box">
+          <div class="crypto-item">
+            <span class="crypto-label" data-i18n="footer.btc">Support us via BTC:</span><br>
+            <span class="crypto-val">19taAMGSr2dYEbLozfSLu1g45oXA9UuFhH</span>
+          </div>
+          <div class="crypto-item">
+            <span class="crypto-label" data-i18n="footer.eth">ETH ERC20:</span><br>
+            <span class="crypto-val">0x52ac13687c2183f5da3412fdec2f94f44ad9188d</span>
+          </div>
+        </div>
+
+        <div class="social-links">
+          <a href="https://github.com/opesuite" target="_blank" rel="noopener" class="social-icon magnetic" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+          <a href="https://x.com/OpeSuite" target="_blank" rel="noopener" class="social-icon magnetic" aria-label="X">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://www.reddit.com/user/OpeSuite" target="_blank" rel="noopener" class="social-icon magnetic" aria-label="Reddit">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5.01 13.28c-.44.44-1.4.76-2.41.76-1.02 0-1.98-.32-2.42-.76-.14-.14-.22-.32-.22-.52 0-.4.32-.72.72-.72.2 0 .38.08.52.22.18.18.72.44 1.4.44s1.22-.26 1.4-.44c.14-.14.32-.22.52-.22.4 0 .72.32.72.72 0 .2-.08.38-.22.52zM9.5 14.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5-1.5.67-1.5 1.5zm6.8-2.5c-.28 0-.5-.22-.5-.5V9.5c0-.28.22-.5.5-.5s.5.22.5.5v2c0 .28-.22.5-.5.5zm-9.6 0c-.28 0-.5-.22-.5-.5V9.5c0-.28.22-.5.5-.5s.5.22.5.5v2c0 .28-.22.5-.5.5z"/></svg>
+          </a>
+        </div>
+
+        <div class="footer-nav">
+          <a href="#" class="magnetic" data-i18n="footer.privacy">Privacy</a>
+          <a href="#" class="magnetic" data-i18n="footer.terms">Terms</a>
+          <a href="#" class="magnetic" data-i18n="footer.contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ─── i18n Translations ─── */
+    const translations = {
+      en: {
+        'nav.products': 'Products',
+        'nav.platform': 'Platform',
+        'nav.ecosystem': 'Ecosystem',
+        'nav.docs': 'Docs',
+        'nav.cta': 'Get Access',
+        'hero.badge': '⚡ Early Access — Features may change as we build',
+        'hero.h1': 'Intelligent Digital Infrastructure',
+        'hero.p': 'OpeSuite BRAND HOUSE. A unified ecosystem of intelligent tools built for the next generation of creators, communicators, and builders.',
+        'hero.cta1': 'Explore Products',
+        'hero.cta2': 'Learn More',
+        'stats.products': 'Live Products',
+        'stats.core': 'Powered Core',
+        'stats.encrypted': 'Encrypted P2P',
+        'stats.scale': 'Scalability',
+        'products.title': 'The OpeSuite Family',
+        'products.sub': 'Two powerful products, one cohesive vision. Built for intelligence and privacy-first communication.',
+        'opeai.label': 'AI Interface',
+        'opeai.desc': 'A premium AI chat experience powered by advanced language models. Featuring a particle-animated canvas, multi-model support, conversation threading, and a polished adaptive interface with light/dark themes.',
+        'opeai.tag1': 'Multi-model AI',
+        'opeai.tag2': 'Canvas Particles',
+        'opeai.tag3': 'Conversation History',
+        'opeai.tag4': 'Markdown Rendering',
+        'opeai.tag5': 'Dark / Light Theme',
+        'opeai.tag6': 'Emoji Reactions',
+        'opeai.btn': 'Launch OpeAI →',
+        'opechat.label': 'Encrypted P2P',
+        'opechat.desc': 'A ratchet-encrypted peer-to-peer messaging platform. Zero servers, zero logs. Direct browser-to-browser communication with ephemeral keys, self-destructing messages, and military-grade privacy by default.',
+        'opechat.tag1': 'Ratchet Encryption',
+        'opechat.tag2': 'P2P Direct',
+        'opechat.tag3': 'Self-Destruct Msgs',
+        'opechat.tag4': 'Zero Servers',
+        'opechat.tag5': 'Group Rooms',
+        'opechat.tag6': 'File Sharing',
+        'opechat.btn': 'Launch OpeChat →',
+        'features.title': 'Built different. Built for you.',
+        'features.sub': 'Every product in OpeSuite is engineered with the same obsessive attention to craft, privacy, and user experience.',
+        'feat1.title': 'AI-First Architecture',
+        'feat1.desc': 'Intelligence baked into every layer — from dynamic UI generation to contextual responses.',
+        'feat2.title': 'Privacy by Design',
+        'feat2.desc': 'Zero data collection. End-to-end encryption. Your conversations stay between you and the intended recipient.',
+        'feat3.title': 'Real-time Everything',
+        'feat3.desc': 'Sub-50ms latency P2P connections. Streaming AI responses. Instant everything.',
+        'feat4.title': 'Design Obsession',
+        'feat4.desc': 'Every pixel intentional. Adaptive dark & light themes, fluid animations, and premium micro-interactions.',
+        'eco.title': 'The Suite is growing',
+        'eco.sub': 'More intelligent tools are joining the OpeSuite family.',
+        'eco.opeai': 'Advanced AI chat interface with multi-model support and rich interactions.',
+        'eco.opechat': 'End-to-end encrypted peer-to-peer messaging with zero server dependency.',
+        'eco.opework': 'An AI-powered workspace and productivity hub. Currently in development.',
+        'status.live': '● Live',
+        'status.soon': '◌ Coming Soon',
+        'cta.title': 'Your suite awaits.',
+        'cta.sub': 'No accounts. No subscriptions. Just open and start. Both products run fully in your browser.',
+        'cta.btn1': 'Open OpeAI',
+        'cta.btn2': 'Open OpeChat',
+        'footer.copy': '© 2025 OpeSuite · All rights reserved',
+        'footer.btc': 'Support us via BTC:',
+        'footer.eth': 'ETH ERC20:',
+        'footer.privacy': 'Privacy',
+        'footer.terms': 'Terms',
+        'footer.contact': 'Contact',
+      },
+      ar: {
+        'nav.products': 'المنتجات',
+        'nav.platform': 'المنصة',
+        'nav.ecosystem': 'النظام البيئي',
+        'nav.docs': 'التوثيق',
+        'nav.cta': 'الوصول المبكر',
+        'hero.badge': '⚡ وصول مبكر — قد تتغير الميزات أثناء البناء',
+        'hero.h1': 'بنية تحتية رقمية ذكية',
+        'hero.p': 'OpeSuite — بيت الإبداع الموحد. منظومة متكاملة من الأدوات الذكية مبنية لجيل المستقبل من المبدعين والمطورين والمبتكرين.',
+        'hero.cta1': 'استكشف المنتجات',
+        'hero.cta2': 'اعرف المزيد',
+        'stats.products': 'منتجات حية',
+        'stats.core': 'مدعوم بالذكاء',
+        'stats.encrypted': 'P2P مشفّر',
+        'stats.scale': 'قابلية التوسع',
+        'products.title': 'عائلة OpeSuite',
+        'products.sub': 'منتجان قويان، رؤية واحدة متماسكة. مبنيان على الذكاء والخصوصية أولاً.',
+        'opeai.label': 'واجهة الذكاء الاصطناعي',
+        'opeai.desc': 'تجربة دردشة ذكاء اصطناعي متميزة مدعومة بنماذج لغوية متقدمة. تتضمن لوحة الجسيمات المتحركة، دعم نماذج متعددة، تنظيم المحادثات، وواجهة تكيفية أنيقة مع خيار الوضع الليلي والنهاري.',
+        'opeai.tag1': 'ذكاء اصطناعي متعدد النماذج',
+        'opeai.tag2': 'جسيمات متحركة',
+        'opeai.tag3': 'سجل المحادثات',
+        'opeai.tag4': 'عرض Markdown',
+        'opeai.tag5': 'وضع داكن / فاتح',
+        'opeai.tag6': 'تفاعلات إيموجي',
+        'opeai.btn': 'تشغيل OpeAI ←',
+        'opechat.label': 'P2P مشفّر',
+        'opechat.desc': 'منصة رسائل نظير-إلى-نظير مشفّرة بـ Ratchet. لا خوادم، لا سجلات. اتصال مباشر من متصفح إلى متصفح بمفاتيح مؤقتة، رسائل ذاتية الحذف، وخصوصية عسكرية المستوى بشكل افتراضي.',
+        'opechat.tag1': 'تشفير Ratchet',
+        'opechat.tag2': 'اتصال P2P مباشر',
+        'opechat.tag3': 'رسائل ذاتية الحذف',
+        'opechat.tag4': 'لا خوادم',
+        'opechat.tag5': 'غرف جماعية',
+        'opechat.tag6': 'مشاركة الملفات',
+        'opechat.btn': 'تشغيل OpeChat ←',
+        'features.title': 'مختلف. مصنوع لك.',
+        'features.sub': 'كل منتج في OpeSuite مهندَس بنفس الاهتمام الدقيق بالجودة والخصوصية وتجربة المستخدم.',
+        'feat1.title': 'معمارية تُقدّم الذكاء أولاً',
+        'feat1.desc': 'الذكاء متجذّر في كل طبقة — من توليد واجهة المستخدم الديناميكية إلى الردود السياقية.',
+        'feat2.title': 'الخصوصية من التصميم',
+        'feat2.desc': 'لا جمع بيانات. تشفير كامل من الطرف إلى الطرف. محادثاتك تبقى بينك وبين المستلم المقصود.',
+        'feat3.title': 'كل شيء في الوقت الفعلي',
+        'feat3.desc': 'اتصالات P2P بزمن استجابة أقل من 50 مللي ثانية. استجابات ذكاء اصطناعي متدفقة. كل شيء فوري.',
+        'feat4.title': 'هوس بالتصميم',
+        'feat4.desc': 'كل بكسل مقصود. ثيمات داكنة وفاتحة تكيفية، رسوم متحركة سلسة، وتفاعلات دقيقة متميزة.',
+        'eco.title': 'المنظومة تنمو',
+        'eco.sub': 'أدوات ذكية جديدة تنضم إلى عائلة OpeSuite.',
+        'eco.opeai': 'واجهة دردشة ذكاء اصطناعي متقدمة مع دعم متعدد النماذج وتفاعلات غنية.',
+        'eco.opechat': 'رسائل نظير-إلى-نظير مشفّرة بالكامل بدون أي اعتماد على الخوادم.',
+        'eco.opework': 'مساحة عمل وإنتاجية مدعومة بالذكاء الاصطناعي. قيد التطوير حالياً.',
+        'status.live': '● مباشر',
+        'status.soon': '◌ قريباً',
+        'cta.title': 'مجموعتك في انتظارك.',
+        'cta.sub': 'لا حسابات. لا اشتراكات. افتح وابدأ فوراً. كلا المنتجين يعملان كلياً في متصفحك.',
+        'cta.btn1': 'فتح OpeAI',
+        'cta.btn2': 'فتح OpeChat',
+        'footer.copy': '© 2025 OpeSuite · جميع الحقوق محفوظة',
+        'footer.btc': 'ادعمنا عبر BTC:',
+        'footer.eth': 'ETH ERC20:',
+        'footer.privacy': 'الخصوصية',
+        'footer.terms': 'الشروط',
+        'footer.contact': 'اتصل بنا',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function applyTranslations(lang) {
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      // Update html attributes
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      // Update toggle label
+      document.getElementById('langLabel').textContent = lang === 'ar' ? 'English' : 'العربية';
+      // Update page title
+      document.title = lang === 'ar'
+        ? 'OpeSuite — منظومة الذكاء الرقمي'
+        : 'OpeSuite — The Digital Intelligence Suite';
+    }
+
+    /* ── Theme Toggle ── */
+    const themeBtn = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('opesuite-theme') || 'dark';
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light');
+      themeBtn.textContent = '☀️';
+    }
+    themeBtn.addEventListener('click', () => {
+      const isLight = document.documentElement.classList.toggle('light');
+      themeBtn.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('opesuite-theme', isLight ? 'light' : 'dark');
+      // Update Three.js particles for light mode
+      if (isLight) {
+        torusMat.color.set(0x6366f1);
+        torusMat.opacity = 0.06;
+        pMat.color.set(0x6366f1);
+        pMat.opacity = 0.25;
+      } else {
+        torusMat.color.set(0x6366f1);
+        torusMat.opacity = 0.04;
+        pMat.color.set(0x38bdf8);
+        pMat.opacity = 0.5;
+      }
+    });
+
+        document.getElementById('langToggle').addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'ar' : 'en';
+      applyTranslations(currentLang);
+    });
+
+    /* ─── Spotlight Effect ─── */
+    const spotlight = document.getElementById('spotlight');
+    document.addEventListener('mousemove', e => {
+      spotlight.style.setProperty('--x', e.clientX + 'px');
+      spotlight.style.setProperty('--y', e.clientY + 'px');
+    });
+
+    /* ─── Custom Cursor & Magnetic ─── */
+    const cursor = document.querySelector('.cursor');
+    if (!window.matchMedia('(pointer: coarse)').matches) {
+      let mx = 0, my = 0, cx = 0, cy = 0;
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+      function anim() {
+        cx += (mx - cx) * 0.15; cy += (my - cy) * 0.15;
+        cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
+        requestAnimationFrame(anim);
+      }
+      anim();
+      document.querySelectorAll('a, button, .card-3d, .crypto-val, .social-icon').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
+      document.querySelectorAll('.magnetic').forEach(el => {
+        el.addEventListener('mousemove', e => {
+          const rect = el.getBoundingClientRect();
+          el.style.transform = `translate(${(e.clientX - rect.left - rect.width/2)*0.3}px, ${(e.clientY - rect.top - rect.height/2)*0.3}px)`;
+        });
+        el.addEventListener('mouseleave', () => el.style.transform = '');
+      });
+    }
+
+    /* ─── 3D Card Tilt ─── */
+    document.querySelectorAll('.card-3d').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left, y = e.clientY - rect.top;
+        const rx = ((y - rect.height/2) / rect.height) * -6;
+        const ry = ((x - rect.width/2) / rect.width) * 6;
+        card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.02, 1.02, 1.02)`;
+        card.style.setProperty('--mx', `${x}px`); card.style.setProperty('--my', `${y}px`);
+      });
+      card.addEventListener('mouseleave', () => card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)');
+    });
+
+    /* ─── Scroll Progress & Header ─── */
+    window.addEventListener('scroll', () => {
+      const p = document.documentElement.scrollHeight - window.innerHeight;
+      document.querySelector('.scroll-progress').style.width = ((window.scrollY / p) * 100) + '%';
+      document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    /* ─── Scroll Reveal ─── */
+    document.querySelectorAll('.reveal').forEach(el => {
+      new IntersectionObserver(e => { if(e[0].isIntersecting) e[0].target.classList.add('visible'); }, {threshold: 0.15}).observe(el);
+    });
+
+    /* ─── Three.js Background ─── */
+    const canvas = document.getElementById('bg-3d');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const torusGeo = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+    const torusMat = new THREE.MeshBasicMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.04 });
+    const torus = new THREE.Mesh(torusGeo, torusMat);
+    torus.position.set(0, 0, -25);
+    scene.add(torus);
+
+    const pGeo = new THREE.BufferGeometry();
+    const pCount = 1500; const pPos = new Float32Array(pCount * 3);
+    for(let i=0; i<pCount*3; i++) pPos[i] = (Math.random()-0.5) * 40;
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({ size: 0.03, color: 0x38bdf8, transparent: true, opacity: 0.5 });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    camera.position.z = 5;
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('mousemove', e => {
+      mouseX = (e.clientX/window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY/window.innerHeight - 0.5) * 2;
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      torus.rotation.x += 0.002; torus.rotation.y += 0.003;
+      particles.rotation.y += 0.0005;
+      particles.position.x += (mouseX * 1.5 - particles.position.x) * 0.02;
+      particles.position.y += (-mouseY * 1.5 - particles.position.y) * 0.02;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
