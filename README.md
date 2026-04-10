@@ -13,7 +13,7 @@ Ope Suite , Discover real security ,AI app & chat app built simple and secure,Yo
 
 ## 🌐 The Platform
 
-![OpeSuite](./assets/suite.png)
+![OpeSuite](./assets/land.png)
 
 **OpeSuite** is a unified ecosystem of intelligent tools built for:
 
