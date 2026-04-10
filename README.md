@@ -108,8 +108,8 @@ Early access — features are actively evolving.
 # 💻 Tech Stack:
 ![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7) ![Gimp](https://img.shields.io/badge/Gimp-657D8B?style=for-the-badge&logo=gimp&logoColor=FFFFFF) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
-Support us via BTC:
+## Support us via BTC:
 19taAMGSr2dYEbLozfSLu1g45oXA9UuFhH
-ETH ERC20:
+# ETH ERC20:
 0x52ac13687c2183f5da3412fdec2f94f44ad9188d
 <!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
