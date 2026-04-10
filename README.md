@@ -40,6 +40,7 @@ A powerful AI interface designed for real-time interaction and deep context unde
 - Custom API support  
 - Light / Dark mode
 - OpeCode "Coming Soon"
+- Unlimited usage for version 1.8 and 2.0
 
 > Built for thinking, creating, and solving — directly in your browser.
 
@@ -62,6 +63,7 @@ A secure, peer-to-peer messaging system with zero servers and full encryption.
 - 6 layers of encryption
 - auto message deletion
 - Can be run in HTML file
+- Upload files up to 50MB
 > Private by design. No middleman.
 
 ---
