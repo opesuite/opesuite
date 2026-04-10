@@ -46,7 +46,7 @@ A powerful AI interface designed for real-time interaction and deep context unde
 
 ## 💬 OpeChat
 
-![OpeChat](./assets/opechat.png) ![OpeAI](./assets/chatmain.png) ![OpeAI](./assets/chatlogin.png)
+![OpeChat](./assets/opechat.png) ![OpeAI](./assets/01.png) ![OpeAI](./assets/02.png) ![OpeAI](./assets/chatlogin.png)
 
 A secure, peer-to-peer messaging system with zero servers and full encryption.
 
