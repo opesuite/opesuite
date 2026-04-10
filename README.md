@@ -98,7 +98,7 @@ Early access — features are actively evolving.
 
 ## 📜 License
 
-MIT License
+OpeSuite Personal Use License
 
 ![OpeAI](./assets/footer.png)
 
