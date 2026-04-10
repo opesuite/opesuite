@@ -96,16 +96,12 @@ Early access — features are actively evolving.
 
 ---
 
+
 ## 📜 License
 
-OpeSuite Personal Use License
-## License
-
-See full rules here:
-
-- Main: LICENSE  
-- Chat: docs/OpeChat.md  
-- AI: docs/OpeAI.md  
+- 📄 [Main License](./LICENSE)  
+- 💬 [OpeChat Terms](./docs/OpeChat.md)  
+- 🤖 [OpeAI Terms](./docs/OpeAI.md)
 
 ![OpeAI](./assets/footer.png)
 
