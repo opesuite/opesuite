@@ -38,7 +38,8 @@ A powerful AI interface designed for real-time interaction and deep context unde
 - Markdown rendering  
 - File & image input  
 - Custom API support  
-- Light / Dark mode  
+- Light / Dark mode
+- OpeCode "Coming Soon"
 
 > Built for thinking, creating, and solving — directly in your browser.
 
@@ -58,6 +59,8 @@ A secure, peer-to-peer messaging system with zero servers and full encryption.
 - Ephemeral messaging  
 - Room-based connections  
 - Identity generation system  
+- 6 layers of encryption
+- auto message deletion
 
 > Private by design. No middleman.
 
