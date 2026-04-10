@@ -64,7 +64,7 @@ A secure, peer-to-peer messaging system with zero servers and full encryption.
 ---
 
 ## 🧠 Core Idea
-
+![OpeAI](./assets/2.png)
 OpeSuite connects:
 
 - **AI (OpeAI)** → intelligence  
