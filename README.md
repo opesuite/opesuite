@@ -61,7 +61,7 @@ A secure, peer-to-peer messaging system with zero servers and full encryption.
 - Identity generation system  
 - 6 layers of encryption
 - auto message deletion
-
+- Can be run in HTML file
 > Private by design. No middleman.
 
 ---
