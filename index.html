@@ -67,32 +67,26 @@
       position: fixed; width: 20px; height: 20px;
       border: 1.5px solid rgba(124,58,237,0.7); border-radius: 50%;
       pointer-events: none; z-index: 9999;
+      will-change: transform;
       transform: translate(-50%,-50%);
       transition: width 0.25s var(--ease), height 0.25s var(--ease), background 0.25s, border-color 0.25s;
       mix-blend-mode: screen;
     }
     .cursor.hover { width: 52px; height: 52px; background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.4); }
-    html.light .cursor { mix-blend-mode: multiply; border-color: rgba(124,58,237,0.5); }
-
-    /* ── Noise overlay ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.022; mix-blend-mode: overlay;
-    }
 
     /* ── Mesh gradient bg ── */
     .mesh-bg {
       position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+      will-change: transform;
     }
     .mesh-blob {
-      position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.18;
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15;
+      will-change: transform;
     }
-    .mesh-blob-1 { width: 700px; height: 700px; background: #7c3aed; top: -200px; left: -200px; animation: blobFloat1 20s ease-in-out infinite; }
-    .mesh-blob-2 { width: 500px; height: 500px; background: #0ea5e9; bottom: -100px; right: -100px; animation: blobFloat2 25s ease-in-out infinite; }
-    .mesh-blob-3 { width: 400px; height: 400px; background: #4f46e5; top: 40%; left: 40%; animation: blobFloat3 18s ease-in-out infinite; }
-    html.light .mesh-blob { opacity: 0.06; }
+    .mesh-blob-1 { width: 600px; height: 600px; background: #7c3aed; top: -150px; left: -150px; animation: blobFloat1 24s ease-in-out infinite; }
+    .mesh-blob-2 { width: 450px; height: 450px; background: #0ea5e9; bottom: -80px; right: -80px; animation: blobFloat2 30s ease-in-out infinite; }
+    .mesh-blob-3 { width: 350px; height: 350px; background: #4f46e5; top: 40%; left: 40%; animation: blobFloat3 22s ease-in-out infinite; }
+    html.light .mesh-blob { opacity: 0.05; }
     @keyframes blobFloat1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(80px,60px) scale(1.1)} 66%{transform:translate(-40px,80px) scale(0.9)} }
     @keyframes blobFloat2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-60px,-80px) scale(1.1)} 66%{transform:translate(80px,-40px) scale(0.95)} }
     @keyframes blobFloat3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-60px,60px) scale(1.15)} }
@@ -122,15 +116,16 @@
     header {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding: 20px 0;
-      backdrop-filter: blur(20px) saturate(1.4);
-      -webkit-backdrop-filter: blur(20px) saturate(1.4);
-      background: rgba(5,5,10,0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(5,5,10,0.7);
       border-bottom: 1px solid var(--border);
       transition: all 0.4s var(--ease);
+      will-change: padding, background;
     }
-    header.scrolled { padding: 14px 0; background: rgba(5,5,10,0.85); }
-    html.light header { background: rgba(244,244,248,0.7); }
-    html.light header.scrolled { background: rgba(244,244,248,0.92); }
+    header.scrolled { padding: 14px 0; background: rgba(5,5,10,0.9); }
+    html.light header { background: rgba(244,244,248,0.8); }
+    html.light header.scrolled { background: rgba(244,244,248,0.95); }
     nav { display: flex; align-items: center; gap: 12px; }
     .logo {
       font-family: 'Inter', system-ui, -apple-system, sans-serif; font-weight: 800; font-size: 1.6rem;
@@ -145,23 +140,23 @@
     .btn-icon {
       display: inline-flex; align-items: center; justify-content: center;
       width: 38px; height: 38px; border-radius: 10px;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
       color: var(--text-muted); font-size: 1rem; cursor: pointer;
-      transition: all 0.3s var(--ease); backdrop-filter: blur(8px);
+      transition: all 0.3s var(--ease);
     }
-    .btn-icon:hover { border-color: var(--a1); color: var(--a1); background: rgba(167,139,250,0.08); transform: translateY(-1px); }
-    html.light .btn-icon { background: rgba(0,0,0,0.04); }
+    .btn-icon:hover { border-color: var(--a1); color: var(--a1); background: rgba(167,139,250,0.1); transform: translateY(-1px); }
+    html.light .btn-icon { background: rgba(0,0,0,0.05); }
 
     .lang-toggle {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 7px 16px; border-radius: 50px;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
       color: var(--text-muted); font-size: 0.82rem; font-weight: 600;
-      cursor: pointer; transition: all 0.3s var(--ease); backdrop-filter: blur(8px);
+      cursor: pointer; transition: all 0.3s var(--ease);
       flex-shrink: 0;
     }
-    .lang-toggle:hover { border-color: var(--a2); color: var(--a2); background: rgba(96,165,250,0.07); }
-    html.light .lang-toggle { background: rgba(0,0,0,0.04); }
+    .lang-toggle:hover { border-color: var(--a2); color: var(--a2); background: rgba(96,165,250,0.08); }
+    html.light .lang-toggle { background: rgba(0,0,0,0.05); }
 
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
@@ -181,12 +176,12 @@
     .btn-outline {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 10px 24px; border-radius: 50px;
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
       color: var(--text); font-weight: 500; font-size: 0.9rem;
-      text-decoration: none; cursor: pointer; backdrop-filter: blur(8px);
+      text-decoration: none; cursor: pointer;
       transition: all 0.3s var(--ease);
     }
-    .btn-outline:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+    .btn-outline:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
     html.light .btn-outline { background: rgba(0,0,0,0.04); color: var(--text); }
     html.light .btn-outline:hover { background: rgba(0,0,0,0.08); }
 
@@ -247,6 +242,7 @@
       transform: translate(-50%, -50%);
       animation: orbitSpin 18s linear infinite;
       pointer-events: none;
+      will-change: transform;
     }
     .orbit-ring-2 {
       position: absolute; top: 50%; left: 50%;
@@ -256,6 +252,7 @@
       transform: translate(-50%, -50%);
       animation: orbitSpin 28s linear infinite reverse;
       pointer-events: none;
+      will-change: transform;
     }
     @keyframes orbitSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
@@ -288,11 +285,12 @@
     .float-card {
       position: absolute; background: var(--surface);
       border: 1px solid var(--border); border-radius: 14px;
-      padding: 16px 20px; backdrop-filter: blur(20px);
+      padding: 16px 20px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.05) inset;
       animation: cardFloat var(--dur, 6s) ease-in-out var(--del, 0s) infinite;
       transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease);
       min-width: 180px;
+      will-change: transform;
     }
     html.light .float-card { background: white; box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
     .float-card:hover {
@@ -415,7 +413,8 @@
       border-radius: 20px; padding: 40px; overflow: hidden; position: relative;
       border: none; background: var(--surface);
       transition: box-shadow 0.4s, transform 0.4s var(--ease);
-      /* LED border via outline trick using ::before */
+      will-change: transform;
+      contain: layout style;
     }
 
     /* LED border layer */
@@ -578,7 +577,7 @@
     }
     .btn-cta.filled { background: var(--grad); color: white; }
     .btn-cta.filled:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(124,58,237,0.45); }
-    .btn-cta.ghost { border: 1px solid var(--border); backdrop-filter: blur(8px); color: var(--text); background: rgba(255,255,255,0.03); }
+    .btn-cta.ghost { border: 1px solid var(--border); color: var(--text); background: rgba(255,255,255,0.04); }
     .btn-cta.ghost:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.07); transform: translateY(-3px); }
     html.light .btn-cta.ghost { background: rgba(0,0,0,0.04); }
     html.light .btn-cta.ghost:hover { background: rgba(0,0,0,0.08); }
@@ -1109,21 +1108,56 @@
 
     /* ── Cursor ── */
     const cursor = document.querySelector('.cursor');
-    if (!window.matchMedia('(pointer: coarse)').matches) {
-      let mx = 0, my = 0, cx = 0, cy = 0;
-      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-      (function tick() {
-        cx += (mx - cx) * 0.14; cy += (my - cy) * 0.14;
-        cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
-        requestAnimationFrame(tick);
-      })();
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) { cursor.style.display = 'none'; }
+
+    // Shared mouse state
+    let mouseX = 0, mouseY = 0, mouseMoved = false;
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY; mouseMoved = true;
+    }, { passive: true });
+
+    if (!isTouch) {
       document.querySelectorAll('a, button, .float-card, .eco-item, .product-card').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'), { passive: true });
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'), { passive: true });
       });
     }
 
-    /* ── Product card tilt + spotlight ── */
+    // Cursor lerp state
+    let cx = 0, cy = 0;
+
+    // Hero parallax state
+    const heroVisual = document.getElementById('heroVisual');
+    const heroParallax = document.getElementById('heroParallax');
+    let hpTargX = 0, hpTargY = 0, hpCurrX = 0, hpCurrY = 0;
+    const heroRect = heroVisual ? heroVisual.getBoundingClientRect() : null;
+
+    // ── Single unified RAF loop ──
+    function rafLoop() {
+      // Cursor
+      if (!isTouch) {
+        cx += (mouseX - cx) * 0.14;
+        cy += (mouseY - cy) * 0.14;
+        cursor.style.transform = `translate(${cx - 10}px, ${cy - 10}px)`;
+      }
+
+      // Hero parallax
+      if (heroParallax && heroRect && !isTouch) {
+        const hcx = heroRect.left + heroRect.width / 2;
+        const hcy = heroRect.top + heroRect.height / 2;
+        hpTargX = (mouseX - hcx) / heroRect.width * 14;
+        hpTargY = (mouseY - hcy) / heroRect.height * 9;
+        hpCurrX += (hpTargX - hpCurrX) * 0.06;
+        hpCurrY += (hpTargY - hpCurrY) * 0.06;
+        heroParallax.style.transform = `rotateY(${hpCurrX}deg) rotateX(${-hpCurrY}deg)`;
+      }
+
+      requestAnimationFrame(rafLoop);
+    }
+    requestAnimationFrame(rafLoop);
+
+    /* ── Product card spotlight (mousemove only, no RAF needed) ── */
     document.querySelectorAll('.product-card').forEach(card => {
       const spot = card.querySelector('.pc-spotlight');
       card.addEventListener('mousemove', e => {
@@ -1131,46 +1165,26 @@
         const x = ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%';
         const y = ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%';
         if (spot) { spot.style.setProperty('--mx', x); spot.style.setProperty('--my', y); }
-      });
+      }, { passive: true });
     });
 
     /* ── Magnetic buttons ── */
     document.querySelectorAll('.magnetic').forEach(el => {
       el.addEventListener('mousemove', e => {
         const r = el.getBoundingClientRect();
-        const dx = (e.clientX - r.left - r.width/2) * 0.25;
-        const dy = (e.clientY - r.top - r.height/2) * 0.25;
+        const dx = (e.clientX - r.left - r.width/2) * 0.22;
+        const dy = (e.clientY - r.top - r.height/2) * 0.22;
         el.style.transform = `translate(${dx}px, ${dy}px)`;
-      });
+      }, { passive: true });
       el.addEventListener('mouseleave', () => { el.style.transform = ''; });
     });
-
-    /* ── Hero parallax mouse tracking ── */
-    const heroVisual = document.getElementById('heroVisual');
-    const heroParallax = document.getElementById('heroParallax');
-    if (heroVisual && heroParallax && !window.matchMedia('(pointer: coarse)').matches) {
-      let targetX = 0, targetY = 0, currX = 0, currY = 0;
-      document.addEventListener('mousemove', e => {
-        const rect = heroVisual.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        targetX = (e.clientX - cx) / rect.width * 18;
-        targetY = (e.clientY - cy) / rect.height * 12;
-      });
-      (function parallaxTick() {
-        currX += (targetX - currX) * 0.07;
-        currY += (targetY - currY) * 0.07;
-        heroParallax.style.transform = `rotateY(${currX}deg) rotateX(${-currY}deg)`;
-        requestAnimationFrame(parallaxTick);
-      })();
-    }
 
     
     window.addEventListener('scroll', () => {
       const p = document.documentElement.scrollHeight - window.innerHeight;
       document.querySelector('.scroll-progress').style.width = (window.scrollY / p * 100) + '%';
       document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
-    });
+    }, { passive: true });
 
     /* ── Reveal ── */
     const io = new IntersectionObserver(entries => {
