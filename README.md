@@ -1,123 +1,169 @@
-# About OpeSuite:
-Ope Suite , Discover real security ,AI app & chat app built simple and secure,Your data, your control.
-## 🌍 Access
-
-👉 https://opesuite.github.io/opesuite/
-
-
-
-## 🌐 Socials:
-[![Reddit](https://img.shields.io/badge/Reddit-%23FF4500.svg?logo=Reddit&logoColor=white)](https://www.reddit.com/user/OpeSuite/) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/OpeSuite) 
 
 # OpeSuite
 
-> Intelligent digital infrastructure — powered by **OpeAI** and **OpeChat**
+> **Secure Intelligence. Minimal Infrastructure. Total Control.**
+
+OpeSuite is a next-generation digital platform combining AI, communication, and automation into one seamless, browser-based experience.
 
 ---
 
-## 🌐 The Platform
+## 🌐 Live Platform
 
-![OpeSuite](./assets/land01.png)
-
-**OpeSuite** is a unified ecosystem of intelligent tools built for:
-
-- 🤖 AI interaction  
-- 💬 Secure communication  
-- ⚡ Fast, browser-based experiences  
+👉 [https://opesuite.github.io/opesuite/](https://opesuite.github.io/opesuite/)
 
 ---
 
-## 🤖 OpeAI
+## 🚀 Overview
 
-![OpeAI](./assets/opeai.png) ![OpeAI](./assets/opeaianswer.png)
+OpeSuite is built around a simple idea:
 
-A powerful AI interface designed for real-time interaction and deep context understanding.
+> **You should be able to think, communicate, and automate — without giving up control of your data.**
 
-### Features
+No installations. No centralized systems. No unnecessary complexity.
 
-- Multi-model AI system  
-- Streaming responses  
-- Conversation memory  
-- Markdown rendering  
-- File & image input  
-- Custom API support  
-- Light / Dark mode
-- OpeCode "Coming Soon"
-- Unlimited usage for version 1.8 and 2.0
-
-> Built for thinking, creating, and solving — directly in your browser.
+Just powerful tools — running entirely in your browser.
 
 ---
 
-## 💬 OpeChat
+## 🧠 Core Products
 
-![OpeChat](./assets/opechat.png) ![OpeAI](./assets/Chat01.png)  ![OpeAI](./assets/Chat02.png) ![OpeAI](./assets/chatlogin.png)
+### 🤖 OpeAI
 
-A secure, peer-to-peer messaging system with zero servers and full encryption.
+**Your intelligent interface**
 
-### Features
+A real-time AI system designed for deep thinking, fast responses, and creative workflows.
 
-- End-to-end encryption (AES-256 + Ratchet)  
-- Direct P2P communication  
-- No accounts, no servers  
-- Ephemeral messaging  
-- Room-based connections  
-- Identity generation system  
-- 6 layers of encryption
-- auto message deletion
-- Can be run in HTML file
-- Upload files up to 50MB
-> Private by design. No middleman.
+**Capabilities**
 
----
+* Multi-model AI system
+* Streaming responses
+* Conversation memory
+* Markdown rendering
+* File & image input
+* Custom API support
+* Light / Dark mode
+* Unlimited usage (v1.8 & v2.0)
+* OpeCode *(coming soon)*
 
-## 🧠 Core Idea
-![OpeAI](./assets/2.png)
-OpeSuite connects:
-
-- **AI (OpeAI)** → intelligence  
-- **Chat (OpeChat)** → communication  
-
-into one seamless system.
+> Built for thinking, building, and solving.
 
 ---
 
-## ⚡ Highlights
+### 💬 OpeChat
 
-- AI-powered core  
-- Encrypted peer-to-peer messaging  
-- Fully browser-based  
-- No installation required  
-- Modular and expandable  
+**Private communication, redefined**
+
+A fully peer-to-peer messaging system with zero servers and full encryption.
+
+**Security & Features**
+
+* End-to-end encryption (AES-256 + Double Ratchet)
+* Direct P2P communication
+* No accounts, no servers
+* Ephemeral messaging
+* Auto message deletion
+* Room-based connections
+* Identity generation system
+* 6-layer encryption architecture
+* File sharing up to 50MB
+* Runs directly from a single HTML file
+
+> No middleman. No data collection. Just communication.
 
 ---
 
-## 🌍 Access
+### 🔄 OpeFlow
 
-👉 https://opesuite.github.io/opesuite/
+**Automation without infrastructure**
+
+OpeFlow brings logic and execution into OpeSuite — allowing you to create flows and automate processes directly in the browser.
+
+**Capabilities**
+
+* Visual / modular workflow system *(based on your design)*
+* Event-driven logic
+* Lightweight execution
+* No backend dependency
+* Expandable system for future integrations
+
+> Build systems, not just actions.
+
+---
+
+## ⚙️ System Architecture
+
+OpeSuite is built on three core layers:
+
+* **OpeAI → Intelligence**
+* **OpeChat → Communication**
+* **OpeFlow → Automation**
+
+Together, they form a complete, minimal, and powerful digital infrastructure.
+
+---
+
+## ⚡️ Key Highlights
+
+* Fully browser-based
+* No installation required
+* AI-powered workflows
+* Serverless communication
+* Built-in automation layer
+* Privacy-first architecture
+* Modular and scalable
+
+---
+
+## 🌍 Socials
+
+* Reddit: [https://www.reddit.com/user/OpeSuite/](https://www.reddit.com/user/OpeSuite/)
+* X: [https://x.com/OpeSuite](https://x.com/OpeSuite)
 
 ---
 
 ## 🚧 Status
 
-Early access — features are actively evolving.
+**Early Access**
+
+OpeSuite is actively evolving — with new modules, features, and improvements rolling out continuously.
 
 ---
 
-
 ## 📜 License
 
-- 📄 [Main License](./LICENSE)  
-- 💬 [OpeChat Terms](./docs/OpeChat.md)  
-- 🤖 [OpeAI Terms](./docs/OpeAI.md)
+* 📄 Main License → `./LICENSE`
+* 💬 OpeChat Terms → `./docs/OpeChat.md`
+* 🤖 OpeAI Terms → `./docs/OpeAI.md`
 
-![OpeAI](./assets/footer.png)
+---
 
-# 💻 Tech Stack:
-![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7) ![Gimp](https://img.shields.io/badge/Gimp-657D8B?style=for-the-badge&logo=gimp&logoColor=FFFFFF) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+## 💻 Tech Stack
 
-## Support us via BTC:
-19taAMGSr2dYEbLozfSLu1g45oXA9UuFhH
-# ETH ERC20:
-0x52ac13687c2183f5da3412fdec2f94f44ad9188d
-<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
+* Netlify
+* Git / GitHub
+* GIMP
+
+---
+
+## 💰 Support
+
+**BTC**
+`19taAMGSr2dYEbLozfSLu1g45oXA9UuFhH`
+
+**ETH (ERC20)**
+`0x52ac13687c2183f5da3412fdec2f94f44ad9188d`
+
+---
+
+## 🧩 Final Note
+
+OpeSuite is not just a tool.
+
+It’s a **system**:
+
+* Think with AI
+* Communicate privately
+* Automate everything
+
+All in one place.
+All under your control.
