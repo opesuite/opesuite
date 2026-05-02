@@ -29,7 +29,7 @@ Just powerful tools — running entirely in your browser.
 ---
 
 ## 🧠 Core Products
-
+![OpeSuite](./assets/ope_ai_chat_gif_loop.pdf.gif)
 ### 🤖 OpeAI
 
 **Your intelligent interface**
