@@ -131,6 +131,7 @@ Together, they form a complete, minimal, and powerful digital infrastructure.
 
 * Reddit: [https://www.reddit.com/user/OpeSuite/](https://www.reddit.com/user/OpeSuite/)
 * X: [https://x.com/OpeSuite](https://x.com/OpeSuite)
+* linkedin: [https://www.linkedin.com/in/opesuite-489166401] (https://www.linkedin.com/in/opesuite-489166401)
 
 ---
 
