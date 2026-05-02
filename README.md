@@ -76,6 +76,8 @@ A fully peer-to-peer messaging system with zero servers and full encryption.
 
 > No middleman. No data collection. Just communication.
 
+![OpeSuite](./assets/opechat.png)
+
 ---
 
 ### 🔄 OpeFlow
