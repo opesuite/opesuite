@@ -175,5 +175,8 @@ It’s a **system**:
 * Communicate privately
 * Automate everything
 
+  ![OpeSuite](./assets/msg.png)
+
+
 All in one place.
 All under your control.
