@@ -121,6 +121,9 @@ Together, they form a complete, minimal, and powerful digital infrastructure.
 * Built-in automation layer
 * Privacy-first architecture
 * Modular and scalable
+* 
+  ![OpeSuite](./assets/land03.png)
+
 
 ---
 
@@ -144,7 +147,7 @@ OpeSuite is actively evolving — with new modules, features, and improvements r
 * 📄 Main License → `./LICENSE`
 * 💬 OpeChat Terms → `./docs/OpeChat.md`
 * 🤖 OpeAI Terms → `./docs/OpeAI.md`
-
+Flow with the same terms 
 ---
 
 ## 💻 Tech Stack
