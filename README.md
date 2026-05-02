@@ -147,7 +147,7 @@ OpeSuite is actively evolving — with new modules, features, and improvements r
 * 📄 Main License → `./LICENSE`
 * 💬 OpeChat Terms → `./docs/OpeChat.md`
 * 🤖 OpeAI Terms → `./docs/OpeAI.md`
-Flow with the same terms 
+* Flow with the same terms 
 ---
 
 ## 💻 Tech Stack
