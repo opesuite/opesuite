@@ -96,6 +96,8 @@ OpeFlow brings logic and execution into OpeSuite — allowing you to create flow
 
 > Build systems, not just actions.
 
+![OpeSuite](./assets/opeflow.png)
+
 ---
 
 ## ⚙️ System Architecture
