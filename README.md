@@ -24,6 +24,8 @@ No installations. No centralized systems. No unnecessary complexity.
 
 Just powerful tools — running entirely in your browser.
 
+![OpeSuite](./assets/land02.png)
+
 ---
 
 ## 🧠 Core Products
