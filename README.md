@@ -50,6 +50,9 @@ A real-time AI system designed for deep thinking, fast responses, and creative w
 
 > Built for thinking, building, and solving.
 
+![OpeSuite](./assets/opeai.png)
+
+
 ---
 
 ### 💬 OpeChat
